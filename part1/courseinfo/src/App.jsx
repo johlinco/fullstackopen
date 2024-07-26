@@ -6,20 +6,45 @@ const App = () => {
   const exercises2 = 7
   const part3 = 'State of a component'
   const exercises3 = 14
+  let sum = exercises1 + exercises2 + exercises3
+
+  const Header = (props) => {
+    return (
+      <h1>{props.course}</h1>
+    )
+  }
+  
+  const Part = (props) => {
+    return (
+      <p>
+        {props.part} {props.exercise}
+      </p>
+    )
+  }
+  
+  const Total = (props) => {
+    return (
+      <p>Number of exercises {props.sum}</p>
+    )
+  }
+
+
+  const Content = () => {
+    return (
+      <div>
+        <Part part={part1} exercise={exercises1} />
+        <Part part={part2} exercise={exercises2} />
+        <Part part={part3} exercise={exercises3} />
+      </div>
+    )
+  }
+
 
   return (
     <div>
-      <h1>{course}</h1>
-      <p>
-        {part1} {exercises1}
-      </p>
-      <p>
-        {part2} {exercises2}
-      </p>
-      <p>
-        {part3} {exercises3}
-      </p>
-      <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
+      <Header course={course} />
+      <Content />
+      <Total sum={sum}/>
     </div>
   )
 }
