@@ -18,19 +18,31 @@ const Statistics = (props) => {
   return (
     <div>
       <h1>Statistics</h1>
-      <StatisticLine text='good' value={props.good} />
-      <StatisticLine text='neutral' value={props.neutral} />
-      <StatisticLine text='bad' value={props.bad} />
-      <StatisticLine text='all' value={props.all} />
-      <StatisticLine text='average' value={props.average} />
-      <StatisticLine text='positive' value={props.positive} />
+      <table>
+        <tbody>
+          <StatisticLine text='good' value={props.good} />
+          <StatisticLine text='neutral' value={props.neutral} />
+          <StatisticLine text='bad' value={props.bad} />
+          <StatisticLine text='all' value={props.all} />
+          <StatisticLine text='average' value={props.average} />
+          <StatisticLine text='positive' value={props.positive} />
+        </tbody>
+      </table>
+      
     </div>
   )
 }
 
 const StatisticLine = (props) => {
   return (
-    <p>{props.text} {props.value}{props.text === "positive" ? "%" : ""}</p>
+    <tr>
+      <td>
+      {props.text} 
+      </td>
+      <td>
+      {props.value}{props.text === "positive" ? "%" : ""}
+      </td>
+    </tr>
   )
 }
 
@@ -52,24 +64,30 @@ const App = () => {
   const [positive, setPositive] = useState(0)
   
   const goodClick = () => {
-    setGood(good + 1)
-    setAll(all + 1)
-    setAverage((good - bad)/all)
-    setPositive((good/all)*100)
+    const newGood = good + 1
+    const newAll = all + 1
+    setGood(newGood)
+    setAll(newAll)
+    setAverage((newGood - bad)/newAll)
+    setPositive((newGood/newAll)*100)
   }
 
   const badClick = () => {
-    setBad(bad + 1)
-    setAll(all + 1)
-    setAverage((good - bad)/all)
-    setPositive((good/all)*100)
+    const newBad = bad + 1
+    const newAll = all + 1
+    setBad(newBad)
+    setAll(newAll)
+    setAverage((good - newBad)/newAll)
+    setPositive((good/newAll)*100)
   }
 
   const neutralClick = () => {
-    setNeutral(neutral + 1)
-    setAll(all + 1)
-    setAverage((good - bad)/all)
-    setPositive((good/all)*100)
+    const newNeutral = neutral + 1
+    const newAll = all + 1
+    setNeutral(newNeutral)
+    setAll(newAll)
+    setAverage((good - bad)/newAll)
+    setPositive((good/newAll)*100)
   }
 
 
