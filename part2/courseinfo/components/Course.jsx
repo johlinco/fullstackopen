@@ -1,46 +1,48 @@
-const Course = (props) => {
-    console.log(props.course.name)
-    const Header = (props) => {
-      console.log("header props", props)
+const Course = ({ course }) => {
+
+    const Header = ({ name }) => {
+      console.log("header props", name)
       return (
-        <h1>{props.course.name}</h1>
+        <h1>{name}</h1>
       )
     }
     
-    const Part = (props) => {
-      console.log("part props", props)
+    const Part = ({ part }) => {
+      console.log("part props", part)
       return (
         <p>
-          {props.part.name} {props.part.exercises}
+          {part.name} {part.exercises}
         </p>
       )
     }
     
-    // const Total = (props) => {
-    //   console.log("Total Props", props)
-    //   return (
-    //     <p>Number of exercises {props.course.parts[0].exercises + props.course.parts[1].exercises + props.course.parts[2].exercises}</p>
-    //   )
-    // }
-  
-  
-    const Content = (props) => {
-      console.log("Content Props", props)
+    const Total = ({ parts }) => {
+        let sum = 0
+        for (const part of parts) {
+            sum += part.exercises
+        }
       return (
-        <div>
-          <Part part={props.course.parts[0]} exercise={props.course.parts[0]} />
-          <Part part={props.course.parts[1]} exercise={props.course.parts[1]} />
-          <Part part={props.course.parts[2]} exercise={props.course.parts[2]} />
-        </div>
+        <p>Number of exercises {sum}</p>
       )
     }
   
+    const Content = ({ parts }) => {
+        return (
+            <div>
+                {
+                    parts.map((part) => (
+                        <Part key={part.id} part={part}/>
+                    ))
+                }
+            </div>
+        )
+    }
   
     return (
       <div>
-        <Header course={props.course} />
-        <Content course={props.course}/>
-        {/* <Total course={course}/> */}
+        <Header name={course.name} />
+        <Content parts={course.parts} />
+        <Total parts={course.parts}/>
       </div>
     )
   }
