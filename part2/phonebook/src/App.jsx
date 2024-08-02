@@ -19,7 +19,14 @@ const App = () => {
 
   const addNewName = (event) => {
     event.preventDefault()
-    if (newName.length > 0) {
+    let found = false
+    for (let i = 0; i < persons.length; i++) {
+      if (persons[i].name === newName) {
+        found = true
+        alert(`${newName} is already added to phonebook`)
+      }
+    }
+    if (newName.length > 0 && !found) {
       let newPersons = [...persons]
       let newNameObject = { name: newName }
       newPersons.push(newNameObject)
