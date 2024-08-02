@@ -1,26 +1,36 @@
 import { useState } from 'react'
 
-const NameDisplay = ({ name, phone }) => {
+const NameDisplay = ({ name, number }) => {
   return (
-    <p>{name} {phone}</p>
+    <p>{name} {number}</p>
   )
 }
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '734-9238' }
-  ]) 
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+  ])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
+  const [searchText, setSearchText] = useState('')
+
+  const contactsToShow = searchText.length === 0 
+    ? persons 
+    : persons.filter(person => person.name.toLowerCase().includes(searchText.toLowerCase()))
 
   const nameUpdate = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
   const phoneUpdate = (event) => {
-    console.log(event.target.value)
     setNewPhone(event.target.value)
+  }
+
+  const searchTextUpdate = (event) => {
+    setSearchText(event.target.value)
   }
 
   const addNewName = (event) => {
@@ -34,7 +44,7 @@ const App = () => {
     }
     if (newName.length > 0 && !found) {
       let newPersons = [...persons]
-      let newPersonObject = { name: newName, phone: newPhone }
+      let newPersonObject = { name: newName, number: newPhone }
       newPersons.push(newPersonObject)
       setPersons(newPersons)
       setNewName('')
@@ -45,7 +55,13 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      filter shown with:
+      <input 
+        onChange={searchTextUpdate}
+        value={searchText}
+      />
       <form onSubmit={addNewName}>
+        <h2>add a new contact</h2>
         <div>
           <div>
             name: 
@@ -70,8 +86,8 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {
-          persons.map(person => 
-            <NameDisplay key={person.name} name={person.name} phone={person.phone}/>
+          contactsToShow.map(person => 
+            <NameDisplay key={person.id} name={person.name} number={person.number}/>
           )
         }
       </ul>
