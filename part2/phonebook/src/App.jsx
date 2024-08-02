@@ -1,20 +1,26 @@
 import { useState } from 'react'
 
-const NameDisplay = ({ name }) => {
+const NameDisplay = ({ name, phone }) => {
   return (
-    <p>{name}</p>
+    <p>{name} {phone}</p>
   )
 }
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', phone: '734-9238' }
   ]) 
   const [newName, setNewName] = useState('')
+  const [newPhone, setNewPhone] = useState('')
 
   const nameUpdate = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
+  }
+
+  const phoneUpdate = (event) => {
+    console.log(event.target.value)
+    setNewPhone(event.target.value)
   }
 
   const addNewName = (event) => {
@@ -28,10 +34,11 @@ const App = () => {
     }
     if (newName.length > 0 && !found) {
       let newPersons = [...persons]
-      let newNameObject = { name: newName }
-      newPersons.push(newNameObject)
+      let newPersonObject = { name: newName, phone: newPhone }
+      newPersons.push(newPersonObject)
       setPersons(newPersons)
       setNewName('')
+      setNewPhone('')
       }
   }
 
@@ -40,11 +47,21 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={addNewName}>
         <div>
-          name: 
-          <input 
-            onChange={nameUpdate} 
-            value={newName}
-          />
+          <div>
+            name: 
+            <input 
+              onChange={nameUpdate} 
+              value={newName}
+            />
+          </div>
+          <div>
+            phone:
+            <input 
+              onChange={phoneUpdate} 
+              value={newPhone}
+            />
+          </div>
+
         </div>
         <div>
           <button type="submit">add</button>
@@ -54,7 +71,7 @@ const App = () => {
       <ul>
         {
           persons.map(person => 
-            <NameDisplay key={person.name} name={person.name} />
+            <NameDisplay key={person.name} name={person.name} phone={person.phone}/>
           )
         }
       </ul>
