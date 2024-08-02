@@ -6,6 +6,46 @@ const NameDisplay = ({ name, number }) => {
   )
 }
 
+const Filter = ({ searchText, searchTextUpdate }) => {
+  return (
+    <div>
+      filter shown with:
+      <input 
+        onChange={searchTextUpdate}
+        value={searchText}
+      />
+    </div>
+  )
+}
+
+const PersonForm = ({ addNewName, nameUpdate, newName, phoneUpdate, newPhone }) => {
+  return (
+    <form onSubmit={addNewName}>
+        <div>
+          <div>
+            name: 
+            <input 
+              onChange={nameUpdate} 
+              value={newName}
+            />
+          </div>
+          <div>
+            phone:
+            <input 
+              onChange={phoneUpdate} 
+              value={newPhone}
+            />
+          </div>
+
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+  )
+}
+
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -55,34 +95,18 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      filter shown with:
-      <input 
-        onChange={searchTextUpdate}
-        value={searchText}
+      <Filter 
+        searchText={searchText} 
+        searchTextUpdate={searchTextUpdate}
       />
-      <form onSubmit={addNewName}>
-        <h2>add a new contact</h2>
-        <div>
-          <div>
-            name: 
-            <input 
-              onChange={nameUpdate} 
-              value={newName}
-            />
-          </div>
-          <div>
-            phone:
-            <input 
-              onChange={phoneUpdate} 
-              value={newPhone}
-            />
-          </div>
-
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <h2>add a new contact</h2>
+      <PersonForm 
+        addNewName={addNewName} 
+        nameUpdate={nameUpdate} 
+        newName={newName} 
+        phoneUpdate={phoneUpdate} 
+        newPhone={newPhone}
+      />
       <h2>Numbers</h2>
       <ul>
         {
