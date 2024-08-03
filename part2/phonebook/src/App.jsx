@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import personService from './services/persons'
 
 const NameDisplay = ({ name, number }) => {
   return (
@@ -53,15 +54,13 @@ const App = () => {
   const [newPhone, setNewPhone] = useState('')
   const [searchText, setSearchText] = useState('')
 
-  const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
-  }
-  
-  useEffect(hook, [])
+  })
 
   const contactsToShow = searchText.length === 0 
     ? persons 
@@ -89,12 +88,17 @@ const App = () => {
       }
     }
     if (newName.length > 0 && !found) {
-      let newPersons = [...persons]
-      let newPersonObject = { name: newName, number: newPhone }
-      newPersons.push(newPersonObject)
-      setPersons(newPersons)
-      setNewName('')
-      setNewPhone('')
+      const newPersonObject = { 
+        name: newName,
+        number: newPhone 
+      }
+      personService
+        .create(newPersonObject)
+        .then(person => {
+          setPersons(persons.concat(person))
+          setNewName('')
+          setNewPhone('')
+        })
       }
   }
 
