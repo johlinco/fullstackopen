@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import personService from './services/persons'
 
-const NameDisplay = ({ name, number }) => {
+const NameDisplay = ({ name, number, deletePerson }) => {
   return (
-    <p>{name} {number}</p>
+    <div>
+      <p>{name} {number}</p>
+      <button onClick={deletePerson}>delete</button>
+    </div>
   )
 }
 
@@ -102,6 +105,14 @@ const App = () => {
       }
   }
 
+  const deletePerson = id => {
+    if (window.confirm('Are you sure you want to delete this person?')) { 
+      personService
+      .deletePerson(id)
+      .then(response => response)
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -121,7 +132,12 @@ const App = () => {
       <ul>
         {
           contactsToShow.map(person => 
-            <NameDisplay key={person.id} name={person.name} number={person.number}/>
+            <NameDisplay 
+              key={person.id} 
+              name={person.name} 
+              number={person.number}
+              deletePerson={() => deletePerson(person.id)}
+            />
           )
         }
       </ul>
