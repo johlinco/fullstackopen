@@ -83,20 +83,24 @@ const App = () => {
 
   const addNewName = (event) => {
     event.preventDefault()
+    let found = false
+    let foundPersonIdx
+    let updatedPersonObject = []
     for (let i = 0; i < persons.length; i++) {
+      console.log(persons[i].name)
       if (persons[i].name === newName) {
-        const newPersonObject = {...persons[i], phone: newPhone}
-        if (window.confirm('Are you sure you want to update phone number for this person?')) {
-          personService
-            .update(persons[i].id, newPersonObject)
-            .then(updatedPerson => {
-              setPersons(persons.map(person => person.id === persons[i].id ? person : updatedPerson))
-            })
+        found = true
+        foundPersonIdx = i
+        updatedPersonObject = {
+          ...persons[i],
+          number: newPhone,
         }
+        break
       }
     }
 
-    if (newName.length > 0) {
+    if (newName.length > 0 && !found) {
+      (console.log('ruuning when bad'))
       const newPersonObject = { 
         name: newName,
         number: newPhone 
@@ -109,6 +113,17 @@ const App = () => {
           setNewPhone('')
         })
       }
+    
+    if (newName.length > 0 && found) {
+      if (window.confirm('Are you sure you want to update phone number for this person?')) {
+        personService
+          .update(updatedPersonObject.id, updatedPersonObject)
+          .then(updatedPerson => {
+            const newPersons = persons.map(person => person.id === updatedPersonObject.id ? person : updatedPerson)
+            setPersons(newPersons)
+          })
+      }
+    }
   }
 
   const deletePerson = id => {
