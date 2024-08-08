@@ -24,7 +24,7 @@ const Footer = () => {
 
 
 const App = (props) => {
-  const [notes, setNotes] = useState([])
+  const [notes, setNotes] = useState(null)
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
@@ -37,6 +37,7 @@ const App = (props) => {
       })
   }, [])
 
+  if (!notes) return null
   const notesToShow = showAll ? notes : notes.filter(note => note.important)
 
   const addNote = (event) => {
