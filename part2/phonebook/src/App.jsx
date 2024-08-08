@@ -1,6 +1,21 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import personService from './services/persons'
+import './index.css'
+
+const Notification = ({ notificationMessage, successOrError }) => {
+
+  return (
+    <div className={successOrError === 'success' 
+      ? 'success' 
+      : successOrError === 'error'
+        ? 'error'
+        : 'successPending'
+      }>
+      {notificationMessage}
+    </div>
+  )
+}
 
 const NameDisplay = ({ name, number, deletePerson }) => {
   return (
@@ -56,6 +71,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [searchText, setSearchText] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState('')
+  const [successOrError, setSuccessOrError] = useState(null)
 
   useEffect(() => {
     personService
@@ -111,6 +128,12 @@ const App = () => {
           setPersons(persons.concat(person))
           setNewName('')
           setNewPhone('')
+          setNotificationMessage(`Added ${newPersonObject.name}`)
+          setSuccessOrError('success')
+          setTimeout(() =>  {
+            setNotificationMessage('')
+            setSuccessOrError(null);
+          }, 5000)
         })
       }
     
@@ -121,6 +144,17 @@ const App = () => {
           .then(updatedPerson => {
             const newPersons = persons.map(person => person.id === updatedPersonObject.id ? person : updatedPerson)
             setPersons(newPersons)
+          })
+          .catch(error => {
+            setNotificationMessage(
+              `Information for '${newName}' was already deleted from server`
+            )
+            setSuccessOrError('error')
+            setNotes(notes.filter(n => n.id !== id))
+            setTimeout(() =>  {
+              setNotificationMessage('')
+              setSuccessOrError(null);
+            }, 5000)
           })
       }
     }
@@ -137,6 +171,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notificationMessage={notificationMessage} successOrError={successOrError} />
       <Filter 
         searchText={searchText} 
         searchTextUpdate={searchTextUpdate}
