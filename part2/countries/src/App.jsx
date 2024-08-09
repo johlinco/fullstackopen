@@ -28,7 +28,7 @@ const CountryView =({ languageList, commonName, capital, area, flagUrl, flagAlt 
 }
 
 
-const Display = ({ countryList }) => {
+const Display = ({ countryList, handleSelectedCountry }) => {
 
   if (countryList.length === 1) {
     const filteredLanguages = Object.values(countryList[0].languages)
@@ -54,6 +54,7 @@ const Display = ({ countryList }) => {
                 <p key={country.name.common}>{country.name.common}</p>
                 <button 
                   key={country.name.commom}
+                  onClick={() => handleSelectedCountry(country.name.common)}
                 >
                   Show {country.name.common}
                 </button>
@@ -91,6 +92,11 @@ function App() {
     setSearchText(event.target.value)
   }
 
+  const handleSelectedCountry = (country) => { 
+    setSearchText(country)
+  }
+
+
   const countriesToShow = searchText.length === 0 
   ? allCountries 
   : allCountries.filter(country => country.name.common.toLowerCase().includes(searchText.toLowerCase()))
@@ -105,7 +111,9 @@ function App() {
       />
       <Display 
         countryList={countriesToShow} 
+        handleSelectedCountry={handleSelectedCountry}
       />
+      <button onClick={() => setSearchText('')}>Clear</button>
     </>
   )
 }
