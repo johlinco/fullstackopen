@@ -3,6 +3,7 @@ import Filter from '/components/Filter'
 import axios from 'axios'
 
 
+
 const LanguageToDisplay = ({ language }) => {
   return (
     <li key={language}>{language}</li>
@@ -29,8 +30,23 @@ const CountryView =({ languageList, commonName, capital, area, flagUrl, flagAlt 
 
 
 const Display = ({ countryList, handleSelectedCountry }) => {
+  const [weather, setWeather] = useState({})
 
   if (countryList.length === 1) {
+    const apiKey = import.meta.env.VITE_WEATHER_API_KEY
+    const [lat, lon] = countryList[0].latlng
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
+    console.log(weatherUrl)
+
+    useEffect(() => {
+      const request = axios.get(weatherUrl)
+      request.then(response => response.data)
+        .then(weather => {
+          setWeather(weather)
+        })
+    },[])
+
+    console.log(weather)
     const filteredLanguages = Object.values(countryList[0].languages)
     return (
       <div>
@@ -100,8 +116,6 @@ function App() {
   const countriesToShow = searchText.length === 0 
   ? allCountries 
   : allCountries.filter(country => country.name.common.toLowerCase().includes(searchText.toLowerCase()))
-
-  console.log(countriesToShow)
 
   return (
     <>
