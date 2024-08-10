@@ -34,19 +34,18 @@ const Display = ({ countryList, handleSelectedCountry }) => {
 
   if (countryList.length === 1) {
     const apiKey = import.meta.env.VITE_WEATHER_API_KEY
-    const [lat, lon] = countryList[0].latlng
-    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${countryList[0].capital}&appid=${apiKey}&units=metric`
     console.log(weatherUrl)
 
     useEffect(() => {
       const request = axios.get(weatherUrl)
       request.then(response => response.data)
-        .then(weather => {
-          setWeather(weather)
+        .then(weatherFromApi => {
+          console.log(weatherFromApi)
+          setWeather(weatherFromApi)
         })
-    },[])
+    },[weather])
 
-    console.log(weather)
     const filteredLanguages = Object.values(countryList[0].languages)
     return (
       <div>
