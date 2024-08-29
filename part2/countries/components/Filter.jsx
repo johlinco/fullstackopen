@@ -1,6 +1,3 @@
-
-
-
 const Filter = ({ searchText, searchTextUpdate }) => {
     return (
       <div>
