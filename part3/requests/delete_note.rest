@@ -1,1 +1,1 @@
-DELETE /api/notes/3
+DELETE /api/notes
