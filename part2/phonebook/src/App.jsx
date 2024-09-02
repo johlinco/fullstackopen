@@ -80,7 +80,7 @@ const App = () => {
       .then(initialPersons => {
         setPersons(initialPersons)
       })
-  })
+  }, [])
 
   const contactsToShow = searchText.length === 0 
     ? persons 
