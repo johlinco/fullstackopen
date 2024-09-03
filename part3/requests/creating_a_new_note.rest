@@ -1,8 +1,8 @@
 
-POST /api/notes/ HTTP/1.1
+POST http:localhost:3001/api/notes
 content-type: application/json
 
 {
-    "name": "sample",
-    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+    "content": "sample",
+    "importatnt": true,
 }
