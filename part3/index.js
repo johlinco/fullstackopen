@@ -28,23 +28,6 @@ mongoose.connect(url)
 app.use(cors())
 app.use(express.static('dist'))
 
-let notes = [
-  {
-    id: 1,
-    content: "HTML is easy",
-    important: true
-  },
-  {
-    id: 2,
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: 3,
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
-  }
-]
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -71,12 +54,6 @@ app.get('/api/notes', (request, response) => {
   })
 })
 
-const generateId = () => {
-  const maxId = notes.length > 0
-    ? Math.max(...notes.map(n => n.id))
-    : 0
-  return maxId + 1
-}
 
 app.post('/api/notes', (request, response, next) => {
   const body = request.body
@@ -97,8 +74,8 @@ app.get('/api/notes/:id', (request, response, next) => {
   const { content, important } = request.body
 
   Note.findById(
-    request.params.id, 
-    { content, important }, 
+    request.params.id,
+    { content, important },
     { new: true, runValidators: true, context: 'query' }
   )
     .then(note => {
@@ -115,8 +92,8 @@ app.put('/api/notes/:id', (request, response, next) => {
   const { content, important } = request.body
 
   Note.findByIdAndUpdate(
-    request.params.id, 
-    { content, important }, 
+    request.params.id,
+    { content, important },
     { new: true, runValidators: true, context: 'query' }
   )
     .then(updatedNote => {
