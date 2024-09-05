@@ -109,7 +109,7 @@ app.get('/api/notes/:id', (request, response, next) => {
   .catch(error => next(error))
 })
 
-app.put('/api/notes/:id', (request, respons, next) => {
+app.put('/api/notes/:id', (request, response, next) => {
   const body = request.body
 
   const note = {
@@ -119,7 +119,7 @@ app.put('/api/notes/:id', (request, respons, next) => {
 
   Note.findByIdAndUpdate(request.params.id, note, { new: true })
     .then(updatedNote => {
-      respons.json(updatedNote)
+      response.json(updatedNote)
     })
     .catch(error => {next(error)})
 })

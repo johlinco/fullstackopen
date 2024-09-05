@@ -81,6 +81,7 @@ const App = () => {
         setPersons(initialPersons)
       })
   }, [])
+  console.log(persons)
 
   const contactsToShow = searchText.length === 0 
     ? persons 
@@ -117,7 +118,7 @@ const App = () => {
     }
 
     if (newName.length > 0 && !found) {
-      (console.log('ruuning when bad'))
+
       const newPersonObject = { 
         name: newName,
         number: newPhone 
@@ -150,7 +151,7 @@ const App = () => {
               `Information for '${newName}' was already deleted from server`
             )
             setSuccessOrError('error')
-            setNotes(notes.filter(n => n.id !== id))
+            setPersons(persons.filter(n => n.id !== id))
             setTimeout(() =>  {
               setNotificationMessage('')
               setSuccessOrError(null);
