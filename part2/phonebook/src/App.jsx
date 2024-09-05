@@ -136,6 +136,11 @@ const App = () => {
             setSuccessOrError(null);
           }, 5000)
         })
+        .catch(error => {
+          console.log(error.response.data.error)
+          setNotificationMessage(error.response.data.error)
+          setSuccessOrError('error')
+        })
       }
     
     if (newName.length > 0 && found) {
