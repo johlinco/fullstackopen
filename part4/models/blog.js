@@ -1,29 +1,18 @@
-const blogsRouter = require('express').Router()
-const { response } = require('express')
-const Blog = require('../models/blog')
+const mongoose = require('mongoose')
 
-blogsRouter.get('/', (request, response) => {
-  Blog.find({})
-    .then(blogs => {
-      response.json(blogs)
+const blogSchema = new mongoose.Schema({
+  title: String,
+  author: String,
+  url: String,
+  likes: Number
+})
+
+blogSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+      returnedObject.id = returnedObject._id.toString()
+      delete returnedObject._id
+      delete returnedObject.__v
+    }
   })
-})
 
-blogsRouter.post('/', (request, resposnse, next) => {
-    const body = request.body
-
-    const blog = new Blog({
-        title: body.title,
-        author: body.author,
-        url: body.url,
-        likes: body.likes,
-    })
-
-    blog.save()
-      .then(savedBlog => {
-        response.json(savedBlog)
-      })
-      .catch(error => next(error))
-})
-
-module.exports = blogsRouter
+module.exports = mongoose.model('Blog', blogSchema)
