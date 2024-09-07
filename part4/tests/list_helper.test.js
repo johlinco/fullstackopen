@@ -167,4 +167,40 @@ describe('total likes', () => {
     })
   })
 
+  describe('Most likes', () => {
+    const listWithOneBlog = [
+      {
+        _id: '5a422aa71b54a676234d17f8',
+        title: 'Go To Statement Considered Harmful',
+        author: 'Edsger W. Dijkstra',
+        url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+        likes: 5,
+        __v: 0
+      }
+    ]
+  
+    test('when list has only one blog, returns that author correct likes', () => {
+      const result = listHelper.mostLikes(listWithOneBlog)
+      assert.deepStrictEqual(result, 
+        {
+            author: 'Edsger W. Dijkstra',
+            likes: 5
+        }
+      )
+    })
+
+    test('when given list with multiple blogs, returns correct author and number of likes', () => {
+        assert.deepStrictEqual(listHelper.mostLikes(testBlogs), 
+            {
+                author: "Edsger W. Dijkstra",
+                likes: 17
+            }
+        )
+    })
+
+    test('empty blog list returns empty object', () => {
+        assert.deepStrictEqual(listHelper.mostLikes([]), {})
+    })
+  })
+
   
