@@ -3,6 +3,17 @@ const dummy = (blogs) => {
 
 }
 
+const totalLikes = (blogs) => {
+    let sum = 0
+
+    for (const blog of blogs) {
+        sum += blog.likes
+    }
+
+    return sum
+}
+
 module.exports = {
-    dummy
+    dummy,
+    totalLikes
 }
