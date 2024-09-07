@@ -85,3 +85,46 @@ describe('total likes', () => {
         assert.strictEqual(listHelper.totalLikes([]), 0)
     })
   })
+
+  describe('total likes', () => {
+    const listWithOneBlog = [
+      {
+        _id: '5a422aa71b54a676234d17f8',
+        title: 'Go To Statement Considered Harmful',
+        author: 'Edsger W. Dijkstra',
+        url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+        likes: 5,
+        __v: 0
+      }
+    ]
+  
+    test('when list has only one blog, equals the likes of that', () => {
+      const result = listHelper.favoriteBlog(listWithOneBlog)
+      assert.deepStrictEqual(result, 
+        {
+            _id: '5a422aa71b54a676234d17f8',
+            title: 'Go To Statement Considered Harmful',
+            author: 'Edsger W. Dijkstra',
+            url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+            likes: 5,
+            __v: 0
+          })
+    })
+
+    test('when given list with multiple blogs, sum is correct', () => {
+        assert.deepStrictEqual(listHelper.favoriteBlog(testBlogs), 
+        {
+            _id: "5a422b3a1b54a676234d17f9",
+            title: "Canonical string reduction",
+            author: "Edsger W. Dijkstra",
+            url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+            likes: 12,
+            __v: 0
+          }
+        )
+    })
+
+    test('empty blog list returns 0', () => {
+        assert.deepStrictEqual(listHelper.favoriteBlog([]), {})
+    })
+  })
