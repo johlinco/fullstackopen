@@ -4,6 +4,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const assert = require('assert')
 const Blog = require('../models/blog')
+const { notesInDb } = require('../../part3/tests/test_helper')
 
 const api = supertest(app)
 
@@ -157,7 +158,19 @@ test('can not add blog without url', async () => {
     const blogsAtEnd = await blogsInDb()
 
     assert.strictEqual(blogsAtEnd.length, initialBlogs.length)
+})
 
+test('can delete blog with correct id', async () => {
+    const blogsAtStart = await blogsInDb()
+    const blogToDeleteId = blogsAtStart[0].id
+
+    await api.delete(`/api/blogs/${blogToDeleteId}`).expect(204)
+
+    const blogsAtEnd = await blogsInDb()
+    const endingIds = blogsAtEnd.map(b => b.id)
+    assert(!endingIds.includes(blogToDeleteId))
+    assert(blogsAtStart.length - blogsAtEnd.length === 1)
+    
 })
 
 after(async () => {
