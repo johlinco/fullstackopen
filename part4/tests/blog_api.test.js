@@ -126,6 +126,40 @@ test('blogs added without likes property go into db with 0 likes', async () => {
     assert.strictEqual(0, blogsAtEnd[blogsAtEnd.length-1].likes)
 })
 
+test('can not add blog without title', async () => {
+    const newBlog = {
+        _id: "5a422a851b54b676234d17f7",
+        author: "Lincoln Hoey Moore",
+        url: "https://www.google.com",
+        likes: 2,
+        __v: 0
+      }
+
+    await api.post('/api/blogs').send(newBlog).expect(400)
+
+    const blogsAtEnd = await blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, initialBlogs.length)
+
+})
+
+test('can not add blog without url', async () => {
+    const newBlog = {
+        _id: "5a422a851b54b676234d17f7",
+        title: "Type wars",
+        author: "Lincoln Hoey Moore",
+        likes: 2,
+        __v: 0
+      }
+
+    await api.post('/api/blogs').send(newBlog).expect(400)
+
+    const blogsAtEnd = await blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, initialBlogs.length)
+
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
