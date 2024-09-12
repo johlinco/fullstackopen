@@ -110,6 +110,22 @@ test('post request creates new blog post', async () => {
     assert(authors.includes("Lincoln Hoey Moore"))
 })
 
+test('blogs added without likes property go into db with 0 likes', async () => {
+    const newBlog = {
+        _id: "5a422a851b54b676234d17f7",
+        title: "Type wars",
+        author: "Lincoln Hoey Moore",
+        url: "https://www.google.com",
+        __v: 0
+    }
+
+    await api.post('/api/blogs').send(newBlog).expect(201).expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await blogsInDb()
+
+    assert.strictEqual(0, blogsAtEnd[blogsAtEnd.length-1].likes)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
