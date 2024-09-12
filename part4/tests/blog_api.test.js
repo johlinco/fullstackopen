@@ -58,6 +58,11 @@ const initialBlogs = [
     }  
 ]
 
+const blogsInDb = async () => {
+    const blogs = await Blog.find({})
+    return blogs.map(blog => blog.toJSON())
+}
+
 beforeEach(async () => {
     await Blog.deleteMany({})
 
@@ -77,6 +82,32 @@ test('blogs are returned as json', async () => {
 test('there are correct number of notes', async () => {
     const response = await api.get(('/api/blogs'))
     assert.strictEqual(response.body.length, initialBlogs.length)
+})
+
+test('id property does not have underscore', async() => {
+    const response = await api.get(('/api/blogs'))
+    assert(response.body[0].id && !response.body[0]._id)
+
+})
+
+test('post request creates new blog post', async () => {
+    const newBlog = {
+      _id: "5a422a851b54b676234d17f7",
+      title: "Type wars",
+      author: "Lincoln Hoey Moore",
+      url: "https://www.google.com",
+      likes: 2,
+      __v: 0
+    }
+
+    await api.post('/api/blogs').send(newBlog).expect(201).expect('Content-Type', /application\/json/)
+    
+    const blogsAtEnd = await blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, initialBlogs.length+1)
+
+    const authors = blogsAtEnd.map(b => b.author)
+    assert(authors.includes("Lincoln Hoey Moore"))
 })
 
 after(async () => {
