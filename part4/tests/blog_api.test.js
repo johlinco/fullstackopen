@@ -173,6 +173,22 @@ test('can delete blog with correct id', async () => {
     
 })
 
+test('can update existing blog post author', async () => {
+    const blogsAtStart = await blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const updatedBlog = {
+        ...blogToUpdate,
+        author: "J.R.R. Tolkien"
+    }
+
+    await api.put(`/api/blogs/${blogToUpdate.id}`).send(updatedBlog, { new: true }).expect(201)
+    const blogsAtEnd = await blogsInDb()
+
+    const filteredBlogs = blogsAtEnd.filter(b => b.id === blogToUpdate.id)
+    assert.strictEqual(updatedBlog.author, filteredBlogs[0].author)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
